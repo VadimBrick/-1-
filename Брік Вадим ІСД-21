@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
     double a = 2.0;
-    double b = 200.0;
+    double b = 14.36;
     double y;
 
     double numerator = 8.15 * cbrt(b) * log(a); 

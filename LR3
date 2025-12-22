@@ -1,0 +1,48 @@
+#include <iostream>
+#include <math.h>
+using  namespace std;
+int main()
+{
+ int N;
+ 
+ cout <<"Enter three-digit number:"<< endl;
+ cin >>N;
+ N=N%1000;
+ int a = (N/100);
+ int b = (N%100)/10;
+ int c = (N%10);
+ 
+  cout <<"a:"<<a<< endl;
+  cout <<"b:"<<b<< endl;
+    cout <<"c:"<<c<< endl;
+ 
+ 
+ int sum=0;
+ 
+ if(a > 3) sum+=a;
+ if(b > 3) sum+=b;
+ if(c > 3) sum+=c;
+ 
+ cout <<"Sum of numbers:"<<sum<< endl;
+ 
+
+ 
+
+      char n;
+    
+    cout << "Enter first letter of country: " << endl;
+    cin >> n;
+
+    switch(n) {
+        case 'A': cout << "Population: 742742427; Number of cities: 567" << endl; break;
+        case 'B': cout << "Population: 5677; Number of cities: 123" << endl; break;
+        case 'C': cout << "Population: 65137678; Number of cities: 897" << endl; break;
+        case 'D': cout << "Population: 7612398; Number of cities: 671" << endl; break;
+        case 'E': cout << "Population: 12893989; Number of cities: 654" << endl; break;
+        case 'F': cout << "Population: 827398998; Number of cities: 987" << endl; break;
+        case 'G': cout << "Population: 9890808983; Number of cities: 656" << endl; break;
+        default: cout << "Invalid country letter!" << endl; break;
+    }
+    
+    return 0;
+}

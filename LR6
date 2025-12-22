@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+using std::cout;
+using std::cin;
+
+int main() {
+
+//ЗАВДАННЯ 5
+int Tens=0; int Hundreds=0; int Thousands=0; int GivenNumber=0; int OverThree=0;
+cout << "Type a number from 0 to 9999, 5 digit or above will overuse thousands variable but still work: ";
+
+cin >> GivenNumber;
+GivenNumber=abs(GivenNumber);
+
+//Знаходження цифр
+while (GivenNumber>10) {
+if (GivenNumber >= 1000) { Thousands+=1; GivenNumber-=1000; }
+else if (GivenNumber >= 100) { Hundreds+=1; GivenNumber-=100; }
+else if (GivenNumber >= 10) { Tens+=1; GivenNumber-=10; }
+}
+
+// перевірка чи кожна цифра більше трьох
+if (Thousands>3) {OverThree+=1;};
+if (Hundreds>3) {OverThree+=1;}
+if (Tens>3) {OverThree+=1;}
+if (GivenNumber>3) {OverThree+=1;}
+cout << "Amount of numbers bigger than 3: "<<OverThree;
+
+}

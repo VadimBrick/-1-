@@ -1,0 +1,95 @@
+1)
+
+
+#include <iostream>
+#include <cmath> 
+using namespace std;
+
+int main() {
+    double x;
+    const int N = 5; 
+
+    cout << "Enter 5 values of x:\n";
+
+    for (int i = 0; i < N; ++i) {
+        cout << "x[" << i+1 << "] = "; 
+        cin >> x; // read the input
+        double y = sin(x) + x - 1.5; 
+        cout << "y = " << y << "  <- value of y = sin(x) + x - 1.5 for x = " << x << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
+2)
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int sum = 0;
+    for (int i = 1; i <= 100; i += 2) { // лише непарні
+        sum += i;
+    }
+    cout << "Sum of odd numbers from 1 to 100 = " << sum << endl;
+    return 0;
+}
+
+
+3)
+
+
+
+#include <iostream>
+#include <iomanip> 
+#include <cmath>   
+using namespace std;
+
+int main() {
+    double a, b, h; // змінні: початок (a), кінець (b) і крок (h)
+    cout << "Enter start (a), end (b), and step (h): ";
+    cin >> a >> b >> h; // зчитування вхідних значень
+
+   
+    if (h <= 0 || a >= b) {
+        cout << "Invalid input! Make sure h > 0 and a < b." << endl;
+        return 1; 
+    }
+
+   
+    cout << "-------------------------" << endl;
+    cout << setw(10) << "X" << " | " << setw(10) << "Y" << endl;
+    cout << "-------------------------" << endl;
+
+    double x = a; 
+    while (x <= b) {
+       
+        if (x < 0) {
+            cout << setw(10) << x << " | " << "   undefined (x < 0)" << endl;
+        } else {
+        
+            double y = pow(x, 3.0 / 4.0) + 6;
+
+            cout << setw(10) << fixed << setprecision(3) << x 
+                 << " | " 
+                 << setw(10) << fixed << setprecision(3) << y 
+                 << endl;
+
+            if (fabs(y - (x + 6)) < 0.001) {
+                cout << "Symmetry achieved (like a Mobius line...)" << endl;
+            }
+        }
+
+    }
+
+  
+    cout << "-------------------------" << endl;
+    cout << "End of interval reached or x no longer in domain (ODZ)." << endl;
+
+    return 0;
+}

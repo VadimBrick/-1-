@@ -5,7 +5,6 @@ int Task = 1;
 
 int main() {
 
-    // ЗАВДАННЯ 1
     if (Task == 1) {
         int vector[] = { 3, -5, 7, 10, -4, 14, 5, 2, -13 };
         int* FirstElementAddress = vector;
@@ -26,7 +25,6 @@ int main() {
         cout << "Найменший елемент: " << lowest << endl;
     }
 
-    // ЗАВДАННЯ 2
     else if (Task == 2) {
         int matrix[10][10] = {};
         int* FirstElementAddress = &matrix[0][0];

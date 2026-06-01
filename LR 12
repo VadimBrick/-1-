@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+int Task = 1;
+
+int main() {
+
+//ЗАВДАННЯ 1 
+if (Task == 1) {
+int vector[] = { 3, -5, 7, 10, -4, 14, 5, 2, -13 };
+int *FirstElementAddress = vector;
+int lowest; //0
+int repeats=0;
+
+while (repeats < 10) {
+int *TableElement = (FirstElementAddress+repeats);
+if (*TableElement < lowest) {lowest = *TableElement; }
+repeats++;
+}
+
+cout << lowest;
+}
+
+//ЗАВДАННЯ 2
+else if (Task == 2) {
+int matrix[10][10] = {};
+int *FirstElementAddress = &matrix[0][0];
+int Repeats=0;
+
+for (int MainNumber=1;MainNumber<11;MainNumber++) {
+    for (int SecondaryNumber=1;SecondaryNumber<11;SecondaryNumber++) {
+        int *AddressOfElement = (FirstElementAddress+Repeats);
+        *AddressOfElement = (MainNumber*SecondaryNumber);
+        cout.width(4);
+        cout << *AddressOfElement;
+        Repeats++;
+    }
+    cout << "\n";
+}
+
+}
+
+}

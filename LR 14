@@ -1,0 +1,67 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+int Task = 2;
+
+int main(){
+srand(time(0));
+
+if (Task == 1) { 
+
+float *table = new float[3];
+int Positives = 0;
+int Negatives = 0;
+
+for (int i = 0; i<3; i++) {
+float RandomNumber = rand()%4000 - 2000;
+RandomNumber /= 1000;
+*(table+i) = RandomNumber;
+cout<< *(table+i)<< "\n";
+if ( *(table+i) < 0 ) { Negatives++; } else { Positives++; }
+}
+
+cout <<"Positives: "<<Positives<<"\n";
+cout <<"Negatives: "<<Negatives<<"\n";
+delete[] table;
+}
+
+
+if(Task == 2) {
+
+int OddNumbers=0;
+int EvenNumbers=0;
+const int Scale = 3;
+int TotalElements = pow(Scale,2);
+int *DoubleTable = new int[TotalElements];
+
+cout << "Table :\n";
+for (int Iterations=0;Iterations<TotalElements;Iterations++) {
+if (Iterations%Scale==0 && Iterations!=0) { cout<<"\n"; } 
+*(DoubleTable+Iterations) = rand()%10;
+if (*(DoubleTable+Iterations)%2==0) { EvenNumbers++; } else { OddNumbers++; }
+cout << *(DoubleTable+Iterations)<<" ";
+}
+
+cout << "\nNumbers in main diagonal: \n";
+int MainOffset = 0;
+for (int Iterations=0;Iterations<TotalElements;Iterations+=Scale) {
+cout << *(DoubleTable+Iterations+MainOffset)<<" "; 
+MainOffset++;
+}
+cout << "\nNumbers in secondary diagonal: \n";
+int SecondarydOffset = (Scale-1);
+for (int Iterations=0;Iterations<TotalElements;Iterations+=Scale) {
+cout << *(DoubleTable+Iterations+SecondarydOffset)<<" "; 
+SecondarydOffset--;
+}
+
+cout << "\nOdd and even numbers amount: \n";
+cout << "Even: "<<EvenNumbers<<"\n";
+cout << "Odd: "<<OddNumbers<<"\n";
+
+delete[] DoubleTable;
+
+}
+
+}

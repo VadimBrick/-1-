@@ -1,0 +1,88 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+struct Date {
+    int year;
+    int month;
+    int day;
+};
+
+bool isLeap(int year) {
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
+int monthLength(int year, int month) {
+
+    switch(month) {
+        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+            return 31;
+
+        case 4: case 6: case 9: case 11:
+            return 30;
+
+        case 2:
+            if(isLeap(year))
+                return 29;
+            else
+                return 28;
+    }
+
+    return 0;
+}
+
+Date today(void) {
+
+    time_t t = time(NULL);
+    tm tl = *localtime(&t);
+
+    Date d;
+
+    d.year = tl.tm_year + 1900;
+    d.month = tl.tm_mon + 1;
+    d.day = tl.tm_mday;
+
+    return d;
+}
+
+int daysFromStart(Date d) {
+
+    int days = 0;
+
+    for(int y = 1; y < d.year; y++) {
+        if(isLeap(y))
+            days += 366;
+        else
+            days += 365;
+    }
+
+    for(int m = 1; m < d.month; m++) {
+        days += monthLength(d.year, m);
+    }
+
+    days += d.day;
+
+    return days;
+}
+
+int main() {
+
+    Date birth;
+
+    cout << "Enter your year of birth: ";
+    cin >> birth.year;
+
+    cout << "Enter the month: ";
+    cin >> birth.month;
+
+    cout << "Enter the day: ";
+    cin >> birth.day;
+
+    Date t = today();
+
+    int days = daysFromStart(t) - daysFromStart(birth);
+
+    cout << "Days since birth: " << days << endl;
+
+    return 0;
+}

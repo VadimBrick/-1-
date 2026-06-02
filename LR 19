@@ -1,0 +1,79 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+using namespace std;
+int Task = 2;
+
+auto GsubString(string OriginalString, string CategoryName, string ThingName) {
+    auto AdjustedOriginal = "["+CategoryName+"]";
+   auto FoundIndex = OriginalString.find(AdjustedOriginal);
+   OriginalString.replace(FoundIndex,AdjustedOriginal.size(),ThingName);
+   return OriginalString;
+}
+
+int main(void){
+
+if (Task == 1) {
+   
+bool EightCharactersLong = false;
+bool HasUpperCaseLetter = false;
+bool HasLowerCaseLetter = false;
+bool HasOneDigit = false;
+bool HasOneSpecialCharacter = false;
+
+string password;
+getline(std::cin, password);
+
+if (password.size()>=8) { EightCharactersLong=true; }
+for ( char cha : password ) {
+    if ( isupper(cha) ) { HasUpperCaseLetter=true; }
+    if ( islower(cha) ) { HasLowerCaseLetter=true; }
+    if ( isdigit(cha) ) { HasOneDigit=true; }
+    if ( !isalnum(cha) ) { HasOneSpecialCharacter=true; }
+}
+
+
+if (EightCharactersLong==false) { cout << "Password must contain at least 8 characters \n"; }
+if (HasUpperCaseLetter==false) { cout << "Password must have at least 1 upper case letter \n"; }
+if (HasLowerCaseLetter==false) { cout << "Password must have at least 1 lower case letter \n"; }
+if (HasOneDigit==false) { cout << "Password must have at least 1 digit \n"; }
+if (HasOneSpecialCharacter==false) { cout << "Password must have at least 1 special character \n"; }
+
+if ( EightCharactersLong && HasUpperCaseLetter && HasLowerCaseLetter && HasOneDigit && HasOneSpecialCharacter ) {
+    cout << "The password is valid";
+}
+
+}
+
+if (Task ==2) {
+   
+   cout << "Provide Value pairs and placeholder text please\n";
+   string ValuePairs;
+   getline(cin,ValuePairs);
+   string Placeholder;
+   getline(cin,Placeholder);
+   
+   int IndexOffset = 0;
+   for (int i=0; i<=ValuePairs.size(); i++) {
+       string CategoryName = NULL;
+       string ThingName = NULL;
+       
+       if ( ValuePairs[i] == '=' ) { 
+           
+           int Addend = i-IndexOffset;
+           CategoryName = ValuePairs.substr(IndexOffset,Addend);
+           
+           int StartIndex = i+1;
+           int EndIndex = 1;
+           while (true) { if ((StartIndex+EndIndex)==ValuePairs.size() || ValuePairs[StartIndex+EndIndex] == ',' ) { break; } else { EndIndex++; } } 
+           ThingName = ValuePairs.substr(StartIndex,EndIndex);
+           Placeholder = GsubString(Placeholder,CategoryName,ThingName);
+           IndexOffset = (StartIndex+EndIndex+1);
+        }
+      
+   }
+   cout << Placeholder;
+}
+
+}

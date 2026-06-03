@@ -1,0 +1,127 @@
+1 Завдання //
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person {
+public:
+    string name;
+    int age;
+    string city; 
+};
+
+void print(Person* person) {
+    cout << person->name << " is " << person->age << " years old" << endl;
+    cout << "City: " << person->city << endl;
+}
+
+int main() {
+    Person person;
+    person.name = "Harry";
+    person.age = 23;
+    person.city = "London";
+    cout << "Meet " << person.name << endl; 
+    print(&person);
+
+    Person person2;
+    person2.name = "Anna";
+    person2.age = 20;
+    person2.city = "Kyiv";
+    print(&person2);
+
+    return 0;
+}
+
+2 Завдання //
+#include <iostream>
+using namespace std;
+
+class Square {
+private:
+    double side;
+    double area;
+
+public:
+    void set_side(double s) {
+        if (s < 0) return;
+        side = s;
+        area = s * s;
+    }
+
+    void print() {
+        cout << "Side: " << side << ", Area: " << area << endl;
+    }
+};
+
+int main() {
+    Square sq;
+    sq.set_side(5);
+    sq.print();
+    sq.set_side(-3); 
+    sq.print();
+    sq.set_side(7);
+    sq.print();
+    return 0;
+}
+
+3 Завдання //
+
+#include <iostream>
+using namespace std;
+
+class AdHocSquare {
+public:
+    AdHocSquare(double s) { side = s; }
+
+    void set_side(double s) { side = s; }
+
+    double get_area() { return side * side; }
+
+private:
+    double side;
+};
+
+class LazySquare {
+public:
+    LazySquare(double s) {
+        side = s;
+        area = s * s;
+        side_changed = false;
+    }
+
+    void set_side(double s) {
+        side = s;
+        side_changed = true;
+    }
+
+    bool changed() { return side_changed; }
+
+    double get_area() {
+        if (side_changed) {
+            area = side * side;
+            side_changed = false;
+        }
+        return area;
+    }
+
+private:
+    double side;
+    double area;
+    bool side_changed;
+};
+
+int main() {
+    AdHocSquare a(4);
+    cout << "AdHoc area: " << a.get_area() << endl;
+    a.set_side(6);
+    cout << "AdHoc area: " << a.get_area() << endl;
+
+    LazySquare l(4);
+    cout << "Lazy area: " << l.get_area() << endl;
+    cout << "Changed: " << l.changed() << endl;
+    l.set_side(6);
+    cout << "Changed: " << l.changed() << endl;
+    cout << "Lazy area: " << l.get_area() << endl;
+    return 0;
+}

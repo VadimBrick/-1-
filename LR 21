@@ -1,0 +1,238 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <regex>
+using namespace std;
+int Task=1;
+
+
+class FlightBooking {
+public:
+FlightBooking();
+FlightBooking(int id, int capacity, int reserved);
+void printStatus();
+bool reserveSeats(int number_ob_seats);
+bool cancelReservations(int number_ob_seats);
+int getId() { return id; };
+void setId(int id);
+private:
+int id;
+int capacity;
+int reserved;
+};
+
+void FlightBooking::printStatus() {
+int* ReservedSeatsPercentage = new int;
+*ReservedSeatsPercentage = (int)((this->reserved*100)/this->capacity); 
+cout << "Flight "<<this->id<<" : "<<this->reserved<<"/"<<this->capacity<<"("<<*ReservedSeatsPercentage<<"%) seats reserved\n";
+delete ReservedSeatsPercentage;
+}
+
+bool FlightBooking::reserveSeats(int number_of_seats) {
+int* MaxSeatsAmount = new int;
+*MaxSeatsAmount = (int)((this->capacity*1.05)); 
+if ( (number_of_seats+this->reserved)<=*MaxSeatsAmount ) {
+    this->reserved = (this->reserved+number_of_seats);
+    delete MaxSeatsAmount;
+    return true;
+}
+    else { 
+    cout << "Too many seats in total, lower the number so it's less than 105%, "<<number_of_seats<<" & "<<this->reserved<<" out of "<<this->capacity<<"\n"; 
+    delete MaxSeatsAmount; 
+    return false;
+    }
+}
+
+bool FlightBooking::cancelReservations(int number_of_seats) {
+if ((this->reserved-number_of_seats)<0) {
+    this->reserved = 0;
+}
+    else { this->reserved=(this->reserved-number_of_seats); }
+return true;
+}
+
+FlightBooking::FlightBooking() {
+id = 0; capacity = 0; reserved = 0; 
+}
+FlightBooking::FlightBooking(int id, int capacity, int reserved) {
+int* MaxAllowedSeats = new int;
+*MaxAllowedSeats = (int)(capacity*1.05);
+if (reserved<0) { reserved = 0; }
+if (reserved>*MaxAllowedSeats) {
+    cout << "reservations are above 105 percent of total capacity!\n";
+    exit(1);
+}
+else {
+this->id=id;
+this->capacity=capacity;
+this->reserved=reserved;
+}
+delete MaxAllowedSeats;
+}
+
+void FlightBooking::setId(int id) {
+this->id = id;
+}
+
+int main(void){
+
+FlightBooking booking[10];
+
+booking[0] = FlightBooking(1, 400, 0);
+booking[0].printStatus();
+
+string command = "";
+while (command != "quit")
+{
+cout << "What would you like to do?: ";
+getline(cin,command);
+
+
+if ( command.find("create")==0 ) {
+    string CommandNumberString;
+    string IdNumberString;
+    int IdNumber=0;
+    int CommandNumber=0;
+    int IndexNumber=0;
+    int IndexOffsetForCommand=0;
+    
+    for (int i=0;i<command.size();i++) { 
+    if ( isspace(command[i]) ) {
+        IndexOffsetForCommand = i+1;
+        break;
+    }
+    }
+    for (int i=IndexOffsetForCommand;i<command.size();i++) {
+    if ( isspace(command[i])) { IndexOffsetForCommand=i+1; break; }
+    if (isdigit(command[i])) { 
+            IdNumberString = IdNumberString + command[i]; 
+        } 
+    }
+    for (int i=IndexOffsetForCommand;i<command.size();i++) {
+        if (isdigit(command[i])) { 
+            CommandNumberString = CommandNumberString + command[i]; 
+        } 
+    }
+    
+    CommandNumber = stoi(CommandNumberString);
+    IndexNumber = stoi(IdNumberString) - 1;
+    IdNumber = stoi(IdNumberString);
+    
+    if ( IndexNumber <= 9 ) {
+    if ( booking[IndexNumber].getId() == 0 ) {
+    booking[IndexNumber] = FlightBooking(IdNumber, CommandNumber, 0);
+    booking[IndexNumber].printStatus();
+    }
+    else { cout << "Such flight already exists\n"; }
+    }
+    else { cout << "Flight id only from 1 to 10\n"; }
+}
+
+
+else if ( command.find("add")== 0 ) {
+    string CommandNumberString;
+    string IdNumberString;
+    int IdNumber=0;
+    int CommandNumber=0;
+    int IndexOffsetForCommand=0;
+    
+    for (int i=0;i<command.size();i++) { 
+    if ( isspace(command[i]) ) {
+        IndexOffsetForCommand = i+1;
+        break;
+    }
+    }
+    for (int i=IndexOffsetForCommand;i<command.size();i++) {
+    if ( isspace(command[i])) { IndexOffsetForCommand=i+1; break; }
+    if (isdigit(command[i])) { 
+            IdNumberString = IdNumberString + command[i]; 
+        } 
+    }
+    for (int i=IndexOffsetForCommand;i<command.size();i++) {
+        if (isdigit(command[i])) { 
+            CommandNumberString = CommandNumberString + command[i]; 
+        } 
+    }
+    
+    CommandNumber = stoi(CommandNumberString);
+    IdNumber = stoi(IdNumberString) - 1;
+    
+    if ( IdNumber <= 9 ) {
+    if ( booking[IdNumber].getId() != 0 ) {
+    booking[IdNumber].reserveSeats(CommandNumber);
+    booking[IdNumber].printStatus();
+    }
+    else { cout << "There's no flight with such id\n"; }
+    }
+    else { cout << "Flight id only from 1 to 10\n"; }
+}
+
+
+else if ( command.find("cancel")== 0 ) {
+    string CommandNumberString;
+    string IdNumberString;
+    int IdNumber=0;
+    int CommandNumber=0;
+    int IndexOffsetForCommand=0;
+    
+    for (int i=0;i<command.size();i++) { 
+    if ( isspace(command[i]) ) {
+        IndexOffsetForCommand = i+1;
+        break;
+    }
+    }
+    for (int i=IndexOffsetForCommand;i<command.size();i++) {
+    if ( isspace(command[i])) { IndexOffsetForCommand=i+1; break; }
+    if (isdigit(command[i])) { 
+            IdNumberString = IdNumberString + command[i]; 
+        } 
+    }
+    for (int i=IndexOffsetForCommand;i<command.size();i++) {
+        if (isdigit(command[i])) { 
+            CommandNumberString = CommandNumberString + command[i]; 
+        } 
+    }
+    
+    CommandNumber = stoi(CommandNumberString);
+    IdNumber = stoi(IdNumberString) - 1;
+    
+    if ( IdNumber <= 9 ) {
+    if ( booking[IdNumber].getId() != 0 ) {
+    booking[IdNumber].cancelReservations(CommandNumber);
+    booking[IdNumber].printStatus();
+    }
+    else { cout << "There's no flight with such id\n"; }
+    }
+    else { cout << "Flight id only from 1 to 10\n"; }
+    
+}
+
+
+else if ( command.find("delete")==0 ) {
+    string CommandNumberString;
+    int CommandNumber=0;
+    for (int i=0;i<command.size();i++) { if (isdigit(command[i])) { CommandNumberString = CommandNumberString + command[i]; } }
+    CommandNumber = stoi(CommandNumberString) - 1;
+    
+    if ( CommandNumber <= 9 ) {
+    if ( booking[CommandNumber].getId() != 0 ) {
+    booking[CommandNumber].setId(0);
+    }
+    else { cout << "There's no flight with such id\n"; }
+    }
+    else { cout << "Flight id only from 1 to 10\n"; }
+    
+}
+
+
+else if ( command!="quit" ) { 
+    cout << "Cannot perform this operation\n"; 
+}
+
+
+
+}
+cout<<"- Flight booking program has been shutdown -";
+
+}

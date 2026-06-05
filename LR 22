@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Fraction {
+public:
+    Fraction(int n, int d) : numerator(n), denominator(d) {}
+
+    string toString() {
+        int n = abs(numerator), d = abs(denominator);
+        string result;
+
+        if (n > d) {
+            int whole = n / d;
+            int rem = n % d;
+
+            result = to_string(whole);
+            if (rem) result += " " + to_string(rem) + "/" + to_string(d);
+        } else {
+            result = to_string(n) + "/" + to_string(d);
+        }
+
+        if ((numerator < 0) ^ (denominator < 0))
+            result = "-" + result;
+
+        return result;
+    }
+
+    double toDouble() {
+        return (double)numerator / denominator;
+    }
+
+private:
+    int numerator, denominator;
+};
+
+int main() {
+    string input, num, den;
+    getline(cin, input);
+
+    int pos = input.find('/');
+
+    for (int i = 0; i < pos; i++) {
+        if (input[i] == '-') num = "-" + num;
+        else if (isdigit(input[i])) num += input[i];
+    }
+
+    for (int i = pos + 1; i < input.size(); i++) {
+        if (input[i] == '-') den = "-" + den;
+        else if (isdigit(input[i])) den += input[i];
+    }
+
+    Fraction fraction(stoi(num), stoi(den));
+
+    cout << fraction.toString()
+         << " is "
+         << fraction.toDouble()
+         << " in decimal";
+}

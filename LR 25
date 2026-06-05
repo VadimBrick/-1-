@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class BaseForTreeClasses {
+public:
+    virtual void Draw(int height) {
+        cout << "this method has nothing to it\n";
+    }
+};
+
+class SlashTree : public BaseForTreeClasses {
+public:
+    void Draw(int height) override {
+        cout << "Slash Tree Drawing [Drawing 1]\n";
+
+        for (int i = 1; i <= height; i++) {
+            cout << string(height - i, ' ');
+            cout << string(i, '/') << string(i, '\\') << '\n';
+        }
+    }
+};
+
+class AsteriskTree : public BaseForTreeClasses {
+public:
+    void Draw(int height) override {
+        cout << "Asterisk Tree Drawing [Drawing 2]\n";
+
+        for (int i = 1; i <= height; i++) {
+            cout << string(height - i, ' ');
+            cout << "/" << string(i * 2 - 2, '*') << "\\" << '\n';
+        }
+    }
+};
+
+class PlusTree : public BaseForTreeClasses {
+public:
+    void Draw(int height) override {
+        cout << "Plus Tree Drawing [Drawing 3]\n";
+
+        for (int i = 1; i <= height; i++) {
+            cout << string(height - i, ' ');
+            cout << "/" << string(i * 2 - 2, '+') << "\\" << '\n';
+        }
+    }
+};
+
+int main() {
+    BaseForTreeClasses* trees[3];
+
+    SlashTree tree1;
+    AsteriskTree tree2;
+    PlusTree tree3;
+
+    trees[0] = &tree1;
+    trees[1] = &tree2;
+    trees[2] = &tree3;
+
+    for (int i = 0; i < 3; i++)
+        trees[i]->Draw(4);
+
+    return 0;
+}

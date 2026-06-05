@@ -1,0 +1,204 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int Task=1;
+
+class Fraction{
+public:
+Fraction(int numerator, int denominator);
+string toString();
+double toDouble();
+bool isGreaterThan(Fraction that);
+bool isLessThan(Fraction that);
+bool isEqual(Fraction that);
+private:
+int numerator;
+int denominator;
+bool SetNumToNegativeAfterRecursion = false;
+bool SetDenToNegativeAfterRecursion = false;
+void reduce();
+};
+
+Fraction::Fraction(int numerator, int denominator) {
+    this->numerator = numerator;
+    this->denominator = denominator;
+    this->reduce();
+}
+
+string Fraction::toString() {
+    
+    string FinalString;
+    
+    if (this->numerator == 0) { return "0"; }
+    if (this->denominator == 0) { return to_string(this->numerator); }
+    int Negatives=0;
+    int EntirelyPositiveNumerator=this->numerator;
+    int EntirelyPositiveDenominator=this->denominator;
+    if ( this->numerator<0 ) { Negatives++; EntirelyPositiveNumerator=(this->numerator*-1); }
+    if ( this->denominator<0 ) { Negatives++; EntirelyPositiveDenominator=(this->denominator*-1); }
+    
+    if ( EntirelyPositiveNumerator > EntirelyPositiveDenominator ) {
+        
+        int RemainderOffset = EntirelyPositiveNumerator % EntirelyPositiveDenominator; 
+        int ApplicableDividend = (EntirelyPositiveNumerator-RemainderOffset);
+        int AmountOfFills = ApplicableDividend / EntirelyPositiveDenominator; 
+       
+        string StringFills = to_string(AmountOfFills);
+        string StringRemainderOffset = to_string(RemainderOffset);
+        string StringPositiveDenominator = to_string(EntirelyPositiveDenominator);
+        string FractionPortion = "";
+        if (RemainderOffset!=0) {
+        FinalString = StringFills+" "+StringRemainderOffset+"/"+StringPositiveDenominator;
+        }
+    else { FinalString = StringFills; }
+    }
+    else { 
+        string StringNumerator = to_string(EntirelyPositiveNumerator);
+        string StringDenominator = to_string(EntirelyPositiveDenominator);
+        FinalString = StringNumerator+"/"+StringDenominator; 
+    }
+
+    if ( Negatives%2 != 0 ) {
+    FinalString = "-"+FinalString;
+    }
+    
+    return FinalString;
+}
+double Fraction::toDouble() {
+double NumeratorAdjusted = (double)this->numerator;
+double DenominatorAdjusted = (double)this->denominator;
+double InDoubleFormatNumber = NumeratorAdjusted/DenominatorAdjusted;
+return InDoubleFormatNumber;
+}
+
+void Fraction::reduce() {
+    
+    if ( this->numerator<0 ) { this->SetNumToNegativeAfterRecursion=true; this->numerator=(this->numerator*-1); }
+    if ( this->denominator<0 ) { this->SetDenToNegativeAfterRecursion=true; this->denominator=(this->denominator*-1); }
+    
+    int LowerNumber;
+    if ( this->numerator<this->denominator ) { LowerNumber=this->numerator; } else { LowerNumber=this->denominator; }
+    
+    bool ContinueRecursion = false;
+    if ( LowerNumber >= 2 ) {
+    for (int i=2;i<=LowerNumber;i++) {
+        if ( this->numerator <= 1 || this->denominator <= 1 ) {
+            ContinueRecursion=false;
+            break;
+        }
+        else if ( (this->numerator%i) == 0 && (this->denominator%i) == 0 ) {
+            this->numerator = (this->numerator/i);
+            this->denominator = (this->denominator/i);
+            ContinueRecursion=true;
+            break;
+        }
+    }
+    }
+    else { ContinueRecursion=false; }
+    if ( ContinueRecursion == true ) { 
+        this->reduce(); 
+    }
+    else {
+        if ( this->SetNumToNegativeAfterRecursion==true ) { this->numerator=(this->numerator*-1); }
+        if ( this->SetDenToNegativeAfterRecursion==true ) { this->denominator=(this->denominator*-1); }
+    }
+}
+bool Fraction::isGreaterThan(Fraction that) {
+    double ConvertedNum1=(double)this->numerator;
+    double ConvertedNum2=(double)that.numerator;
+    double ConvertedDen1=(double)this->denominator;
+    double ConvertedDen2=(double)that.denominator;
+    double ThisFractionValue = ConvertedNum1/ConvertedDen1;
+    double ThatFractionValue = ConvertedNum2/ConvertedDen2;
+    
+    if (ThisFractionValue > ThatFractionValue) { return true; } else { return false; }
+}
+
+bool Fraction::isLessThan(Fraction that) {
+    double ConvertedNum1=(double)this->numerator;
+    double ConvertedNum2=(double)that.numerator;
+    double ConvertedDen1=(double)this->denominator;
+    double ConvertedDen2=(double)that.denominator;
+    double ThisFractionValue = ConvertedNum1/ConvertedDen1;
+    double ThatFractionValue = ConvertedNum2/ConvertedDen2;
+    if (ThisFractionValue < ThatFractionValue) { return true; } else { return false; }
+} 
+bool Fraction::isEqual(Fraction that) {
+    double ConvertedNum1=(double)this->numerator;
+    double ConvertedNum2=(double)that.numerator;
+    double ConvertedDen1=(double)this->denominator;
+    double ConvertedDen2=(double)that.denominator;
+    double ThisFractionValue = ConvertedNum1/ConvertedDen1;
+    double ThatFractionValue = ConvertedNum2/ConvertedDen2;
+    if (ThisFractionValue == ThatFractionValue) { return true; } else { return false; }
+}
+int main(void){
+int IntNum1,IntNum2,IntDen1,IntDen2;
+string StringNum1,StringNum2,StringDen1,StringDen2;
+string input1 = "";
+string input2 = "";
+getline(cin,input1);
+getline(cin,input2);
+
+int Offset1 = 0;
+for (int i=0;i<input1.size();i++) {
+    if (input1[i] == '/') { Offset1=i+1; break; }
+    
+    if (input1[i] == '-') { 
+    StringNum1 = "-"+StringNum1;
+    }
+    else if ( isdigit(input1[i]) ) { 
+    StringNum1 = StringNum1+input1[i]; 
+    }  
+    
+}
+for (int i=Offset1;i<input1.size();i++) { 
+    
+    if (input1[i] == '-') { 
+    StringDen1 = "-"+StringDen1;
+    }
+    else if ( isdigit(input1[i]) ) { 
+    StringDen1 = StringDen1+input1[i]; 
+    }   
+}
+IntNum1 = stoi(StringNum1); 
+IntDen1 = stoi(StringDen1);
+
+int Offset2 = 0;
+for (int i=0;i<input2.size();i++) {
+    if (input2[i] == '/') { Offset2=i+1; break; }
+    
+    if (input2[i] == '-') { 
+    StringNum2 = "-"+StringNum2;
+    }
+    else if ( isdigit(input2[i]) ) { 
+    StringNum2 = StringNum2+input2[i]; 
+    }      
+}
+for (int i=Offset2;i<input2.size();i++) { 
+    
+    if (input2[i] == '-') { 
+    StringDen2 = "-"+StringDen2;
+    }
+    else if ( isdigit(input2[i]) ) { 
+    StringDen2 = StringDen2+input2[i]; 
+    }
+    
+}
+IntNum2=stoi(StringNum2);
+IntDen2=stoi(StringDen2);
+
+Fraction FirstFraction = Fraction(IntNum1,IntDen1);
+Fraction SecondFraction = Fraction(IntNum2,IntDen2);
+
+if (FirstFraction.isGreaterThan(SecondFraction) == true) {
+cout<<FirstFraction.toString()<<" > "<<SecondFraction.toString();
+}
+else if (FirstFraction.isLessThan(SecondFraction) == true) {
+cout<<FirstFraction.toString()<<" < "<<SecondFraction.toString();
+} 
+else if (FirstFraction.isEqual(SecondFraction) == true) {
+cout<<FirstFraction.toString()<<" = "<<SecondFraction.toString();
+}
+
+}

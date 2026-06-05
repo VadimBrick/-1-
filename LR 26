@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+bool IpCorrectFunction(string IP) {
+    int Portions[4] = {};
+    string TemporaryString;
+    int CustomIndexForOffset = 0;
+    
+    for (int i = 0; i < 4; i++) {
+        for (int j = CustomIndexForOffset; j < IP.size(); j++) {
+            if (IP[j] == '.') { 
+                CustomIndexForOffset = j + 1; 
+                break; 
+            } else { 
+                TemporaryString = TemporaryString + IP[j]; 
+            }
+        }
+        Portions[i] = stoi(TemporaryString);
+        TemporaryString = "";
+    }
+    
+    for (int i = 0; i < 4; i++) {
+        if (Portions[i] < 0 || Portions[i] > 255) { 
+            return false; 
+        }
+    }
+    return true;
+}
+
+class IP_Address {
+public:
+    IP_Address() = default;
+    IP_Address(string IP) : IP(IP) {}
+
+    void Print_IP() { 
+        cout << this->IP << "\n"; 
+    }
+
+protected:
+    string IP;
+};
+
+class IP_AddressChecked : public IP_Address {
+public:
+    IP_AddressChecked() = default;
+    
+    IP_AddressChecked(string IP) { 
+        this->IP = IP; 
+        this->ip_correct = IpCorrectFunction(IP); 
+    }
+    
+    IP_AddressChecked(IP_AddressChecked ObjectCopy, string IP) { 
+        this->IP = IP; 
+        this->ip_correct = IpCorrectFunction(IP); 
+    }
+
+    void Print_IP() { 
+        cout << this->IP << " [" << this->ip_correct << "]\n"; 
+    }
+
+private:
+    bool ip_correct;
+};
+
+int main(void) {
+    string FirstAddress, SecondAddress, ThirdAddress;
+    
+    getline(cin, FirstAddress);
+    getline(cin, SecondAddress);
+    getline(cin, ThirdAddress);
+
+    IP_Address IPA_Object = IP_Address(FirstAddress);
+    IP_AddressChecked IPAC_Object = IP_AddressChecked(SecondAddress);
+    IP_AddressChecked IPAC_ObjectCopy = IP_AddressChecked(IPAC_Object, ThirdAddress);
+
+    cout << "\nprint ip functions:\n";
+    IPA_Object.Print_IP();
+    IPAC_Object.Print_IP();
+    IPAC_ObjectCopy.Print_IP();
+
+    return 0;
+}

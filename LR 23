@@ -1,0 +1,146 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+class Fraction {
+public:
+    Fraction(int num, int den);
+
+    string toString();
+    double toDouble();
+
+    Fraction plus(Fraction other);
+    Fraction minus(Fraction other);
+    Fraction times(Fraction other);
+    Fraction by(Fraction other);
+
+private:
+    int numerator;
+    int denominator;
+
+    void simplify();
+};
+
+Fraction::Fraction(int num, int den) {
+    numerator = num;
+    denominator = den;
+    simplify();
+}
+
+void Fraction::simplify() {
+    if (denominator == 0) return;
+
+    if (denominator < 0) {
+        numerator *= -1;
+        denominator *= -1;
+    }
+
+    int a = abs(numerator);
+    int b = abs(denominator);
+
+    while (b) {
+        int r = a % b;
+        a = b;
+        b = r;
+    }
+
+    if (a == 0) return;
+
+    numerator /= a;
+    denominator /= a;
+}
+
+Fraction Fraction::plus(Fraction other) {
+    return Fraction(
+        numerator * other.denominator + other.numerator * denominator,
+        denominator * other.denominator
+    );
+}
+
+Fraction Fraction::minus(Fraction other) {
+    return Fraction(
+        numerator * other.denominator - other.numerator * denominator,
+        denominator * other.denominator
+    );
+}
+
+Fraction Fraction::times(Fraction other) {
+    return Fraction(
+        numerator * other.numerator,
+        denominator * other.denominator
+    );
+}
+
+Fraction Fraction::by(Fraction other) {
+    return Fraction(
+        numerator * other.denominator,
+        denominator * other.numerator
+    );
+}
+
+double Fraction::toDouble() {
+    return static_cast<double>(numerator) / denominator;
+}
+
+string Fraction::toString() {
+    if (numerator == 0) return "0";
+
+    bool isNegative = numerator < 0;
+
+    int num = abs(numerator);
+    int den = abs(denominator);
+
+    int integerPart = num / den;
+    int remainder = num % den;
+
+    string result = isNegative ? "-" : "";
+
+    if (integerPart) {
+        result += to_string(integerPart);
+
+        if (remainder)
+            result += " " + to_string(remainder) + "/" + to_string(den);
+    } else {
+        result += to_string(remainder) + "/" + to_string(den);
+    }
+
+    return result;
+}
+
+void readFraction(int& num, int& den) {
+    string text;
+
+    if (!getline(cin, text) || text.empty())
+        return;
+
+    size_t slashPos = text.find('/');
+
+    num = stoi(text.substr(0, slashPos));
+    den = stoi(text.substr(slashPos + 1));
+}
+
+int main() {
+    int n1, d1, n2, d2;
+
+    readFraction(n1, d1);
+    readFraction(n2, d2);
+
+    Fraction first(n1, d1);
+    Fraction second(n2, d2);
+
+    cout << first.toString() << " + " << second.toString()
+         << " = " << first.plus(second).toString() << endl;
+
+    cout << first.toString() << " - " << second.toString()
+         << " = " << first.minus(second).toString() << endl;
+
+    cout << first.toString() << " * " << second.toString()
+         << " = " << first.times(second).toString() << endl;
+
+    cout << first.toString() << " / " << second.toString()
+         << " = " << first.by(second).toString() << endl;
+
+    return 0;
+}

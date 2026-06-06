@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+
+const int DivideByZero = 111;
+
+void task_1() {
+    int a = 8, b = 0, c = 0;
+    try {
+        cin >> b;
+        if (b == 0) {
+            throw 403;
+        }
+        c = a / b;
+        cout << c << endl;
+    }
+    catch (int errorCode) { 
+        cout << "Your input is not valid, you can't divide by zero. " << errorCode << endl;
+    }
+}
+
+void task_2() {
+    int a = 0, b = 0, c = 0;
+    try {
+        cin >> a;
+        cin >> b;
+        if (b == 0) {
+            throw 403;
+        }
+        c = a / b;
+        cout << c << endl;
+    }
+    catch (int errorCode) { 
+        cout << "Your input is not valid, you can't divide by zero. " << errorCode << endl;
+    }
+}
+
+float internaldiv_task3(float arg1, float arg2) {
+    if (arg2 == 0.0f)
+        throw DivideByZero;
+    return arg1 / arg2;
+}
+
+float div_task3(float arg1, float arg2) {
+    try {
+        return internaldiv_task3(arg1, arg2);
+    }
+    catch (int errorCode) {
+        if (errorCode == DivideByZero) {
+            cout << "[Error inside div()]: Division by zero detected!" << endl;
+        }
+        throw; 
+    }
+}
+
+void task_3() {
+    float a, b;
+    while (cin >> a) {
+        cin >> b;
+        try {
+            float r = div_task3(a, b);
+            cout << r << endl;
+        }
+        catch (int errorCode) {
+            cout << "Are you kidding me? (Caught in main)" << endl;
+        }
+    }
+    cin.clear();
+    cin.ignore(10000, '\n');
+}
+
+float div_task4(float arg1, float arg2) {
+    if (arg2 == 0.0f) {
+        throw DivideByZero; 
+    }
+    return arg1 / arg2;
+}
+
+void task_4() {
+    float a, b;
+    while (cin >> a) {
+        cin >> b;
+        try {
+            float r = div_task4(a, b);
+            cout << r << endl;
+        }
+        catch (int errorCode) {
+            if (errorCode == DivideByZero) {
+                cout << "Are you kidding me? You cannot divide by zero." << endl;
+            }
+        }
+    }
+}
+
+int main(void) {
+    task_1();
+    task_2();
+    task_3();
+    task_4();
+    return 0;
+}
